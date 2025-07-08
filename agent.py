@@ -30,7 +30,11 @@ def create_agent():
     )
     
     # Available tools for the agent
-    tools = []
+    tavily_search = TavilySearch(max_results=3)
+    tools = [tavily_search]
+    
+    # Bind tools to the model
+    model = model.bind_tools(tools)
     
     # Create memory checkpointer for conversation persistence
     checkpointer = InMemorySaver()
@@ -89,3 +93,4 @@ if __name__ == "__main__":
     
     # Test the implementation
     test_agent()
+
