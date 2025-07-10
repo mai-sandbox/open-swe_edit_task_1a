@@ -29,9 +29,13 @@ def create_agent():
         api_key=os.getenv("OPENAI_API_KEY")
     )
     
+    # Load Tavily API key from environment
+    tavily_api_key = os.getenv("TAVILY_API_KEY")
+    
     # Available tools for the agent
     tools = [
         TavilySearchResults(
+            api_key=tavily_api_key,
             max_results=3,
             search_depth="advanced"
         )
@@ -90,3 +94,4 @@ if __name__ == "__main__":
     
     # Test the implementation
     test_agent()
+
