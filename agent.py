@@ -56,6 +56,15 @@ def create_agent():
 def test_agent():
     """Test the agent with a sample query."""
     
+    # Validate required environment variables
+    if not os.getenv("OPENAI_API_KEY"):
+        print("❌ Missing OPENAI_API_KEY environment variable")
+        return False
+    
+    if not os.getenv("TAVILY_API_KEY"):
+        print("❌ Missing TAVILY_API_KEY environment variable")
+        return False
+    
     agent = create_agent()
     
     # Configuration for conversation threading
@@ -84,6 +93,7 @@ def test_agent():
     except Exception as e:
         print(f"❌ Error: {e}")
     
+    print("✅ All environment variables validated successfully")
     return True
 
 if __name__ == "__main__":
@@ -94,4 +104,5 @@ if __name__ == "__main__":
     
     # Test the implementation
     test_agent()
+
 
