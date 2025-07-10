@@ -7,6 +7,7 @@ A LangGraph-based React agent for handling user queries with conversation memory
 import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
+from langchain_tavily import TavilySearch
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -29,7 +30,10 @@ def create_agent():
     )
     
     # Available tools for the agent
-    tools = []
+    tools = [
+        # Web search tool with advanced search depth
+        TavilySearch(max_results=3)
+    ]
     
     # Create memory checkpointer for conversation persistence
     checkpointer = InMemorySaver()
@@ -80,6 +84,10 @@ if __name__ == "__main__":
     # Verify environment variables
     if not os.getenv("OPENAI_API_KEY"):
         print("❌ Missing OPENAI_API_KEY environment variable")
+        exit(1)
+    
+    if not os.getenv("TAVILY_API_KEY"):
+        print("❌ Missing TAVILY_API_KEY environment variable")
         exit(1)
     
     # Test the implementation
