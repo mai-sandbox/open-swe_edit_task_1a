@@ -7,6 +7,7 @@ A LangGraph-based React agent for handling user queries with conversation memory
 import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
+from langchain_tavily import TavilySearch
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -29,7 +30,7 @@ def create_agent():
     )
     
     # Available tools for the agent
-    tools = []
+    tools = [TavilySearch(max_results=3)]
     
     # Create memory checkpointer for conversation persistence
     checkpointer = InMemorySaver()
