@@ -43,44 +43,4 @@ def create_agent():
     
     return agent
 
-def test_agent():
-    """Test the agent with a sample query."""
-    
-    agent = create_agent()
-    
-    # Configuration for conversation threading
-    config = {"configurable": {"thread_id": "conversation-1"}}
-    
-    # Test query
-    query = "What are the latest developments in AI in 2024?"
-    
-    print("Testing Agent Implementation")
-    print("=" * 30)
-    print(f"\nQuery: {query}")
-    print("-" * 30)
-    
-    try:
-        # Invoke the agent
-        result = agent.invoke(
-            {"messages": [{"role": "user", "content": query}]},
-            config
-        )
-        
-        # Get the final message
-        final_message = result["messages"][-1]
-        print(f"Response: {final_message.content[:200]}...")
-        print("✅ Agent executed successfully")
-            
-    except Exception as e:
-        print(f"❌ Error: {e}")
-    
-    return True
-
-if __name__ == "__main__":
-    # Verify environment variables
-    if not os.getenv("OPENAI_API_KEY"):
-        print("❌ Missing OPENAI_API_KEY environment variable")
-        exit(1)
-    
-    # Test the implementation
-    test_agent()
+compiled_graph = create_agent()
