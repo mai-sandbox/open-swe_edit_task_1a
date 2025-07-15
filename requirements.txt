@@ -1,0 +1,11 @@
+# Core LangGraph and LangChain dependencies
+langgraph>=0.2.0
+langchain>=0.2.0
+langchain-openai>=0.1.0
+langchain-tavily>=0.1.0
+
+# Environment and development tools
+python-dotenv>=1.0.0
+ruff>=0.1.0
+mypy>=1.7.0
+
