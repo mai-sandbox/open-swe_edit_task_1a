@@ -32,7 +32,8 @@ def create_agent():
     # Available tools for the agent
     tavily_search = TavilySearch(
         max_results=3,
-        search_depth="advanced"
+        search_depth="advanced",
+        api_key=os.getenv("TAVILY_API_KEY")
     )
     tools = [tavily_search]
     
@@ -49,4 +50,5 @@ def create_agent():
     return agent
 
 compiled_graph = create_agent()
+
 
