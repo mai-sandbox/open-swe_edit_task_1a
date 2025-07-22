@@ -66,8 +66,6 @@ def create_agent():
     # Create the React agent
     try:
         agent: CompiledGraph = create_react_agent(
-        model="gpt-4o-mini",
-        temperature=0,
             model=model,
             tools=tools,
             checkpointer=checkpointer
@@ -82,5 +80,6 @@ try:
     compiled_graph: CompiledGraph = create_agent()
 except Exception as e:
     raise RuntimeError(f"Failed to initialize agent: {e}")
+
 
 
