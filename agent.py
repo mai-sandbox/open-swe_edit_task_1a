@@ -6,8 +6,12 @@ A LangGraph-based React agent for handling user queries with conversation memory
 
 import os
 from dotenv import load_dotenv
+from typing import List, Optional
+from langchain_core.tools import BaseTool
 from langchain_openai import ChatOpenAI
 from langchain_tavily import TavilySearch
+from langgraph.graph.graph import CompiledGraph
+from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
@@ -15,7 +19,7 @@ from langgraph.checkpoint.memory import InMemorySaver
 load_dotenv()
 
 def create_agent():
-    """
+    """Creates a React agent for handling user queries with web search capabilities.
     Creates a React agent for handling user queries.
     
     Returns:
@@ -23,29 +27,60 @@ def create_agent():
     """
     
     # Initialize the language model
-    model = ChatOpenAI(
-        model="gpt-4o-mini",
-        temperature=0,
-        api_key=os.getenv("OPENAI_API_KEY")
-    )
+    openai_api_key: Optional[str] = os.getenv("OPENAI_API_KEY")
+    if not openai_api_key:
+        raise ValueError(
+            "OPENAI_API_KEY environment variable is required. "
+            "Please set it in your .env file or environment."
+        )
     
-    # Available tools for the agent
-    tavily_search = TavilySearch(
-        max_results=3
-    )
-    tools = [tavily_search]
+    tavily_api_key: Optional[str] = os.getenv("TAVILY_API_KEY")
+    if not tavily_api_key:
+        raise ValueError(
+            "TAVILY_API_KEY environment variable is required. "
+            "Please set it in your .env file or environment."
+        )
+    
+    try:
+        model: ChatOpenAI = ChatOpenAI(
+            model="gpt-4o-mini",
+            temperature=0,
+            api_key=openai_api_key
+        )
+    except Exception as e:
+        raise RuntimeError(f"Failed to initialize ChatOpenAI model: {e}")
+    
+    # Initialize Tavily search tool
+    try:
+        tavily_search: TavilySearch = TavilySearch(
+            max_results=3
+        )
+    except Exception as e:
+        raise RuntimeError(f"Failed to initialize TavilySearch tool: {e}")
+    
+    tools: List[BaseTool] = [tavily_search]
     
     # Create memory checkpointer for conversation persistence
-    checkpointer = InMemorySaver()
+    checkpointer: BaseCheckpointSaver = InMemorySaver()
     
     # Create the React agent
-    agent = create_react_agent(
-        model=model,
-        tools=tools,
-        checkpointer=checkpointer
-    )
+    try:
+        agent: CompiledGraph = create_react_agent(
+        model="gpt-4o-mini",
+        temperature=0,
+            model=model,
+            tools=tools,
+            checkpointer=checkpointer
+        )
+    except Exception as e:
+        raise RuntimeError(f"Failed to create React agent: {e}")
     
     return agent
 
-compiled_graph = create_agent()
+# Initialize the compiled graph with proper error handling
+try:
+    compiled_graph: CompiledGraph = create_agent()
+except Exception as e:
+    raise RuntimeError(f"Failed to initialize agent: {e}")
+
 
