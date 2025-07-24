@@ -78,9 +78,10 @@ def create_agent():
 
 # Initialize the compiled graph with proper error handling
 try:
-    compiled_graph: CompiledGraph = create_agent()
+    compiled_graph: CompiledStateGraph = create_agent()
 except Exception as e:
     raise RuntimeError(f"Failed to initialize agent: {e}")
+
 
 
 
