@@ -66,7 +66,7 @@ def create_agent():
     
     # Create the React agent
     try:
-        agent: CompiledGraph = create_react_agent(
+        agent: CompiledStateGraph = create_react_agent(
             model=model,
             tools=tools,
             checkpointer=checkpointer
