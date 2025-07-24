@@ -10,7 +10,7 @@ from typing import List, Optional
 from langchain_core.tools import BaseTool
 from langchain_openai import ChatOpenAI
 from langchain_tavily import TavilySearch
-from langgraph.graph.graph import CompiledGraph
+from langgraph.graph.state import CompiledStateGraph
 from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import InMemorySaver
@@ -53,7 +53,8 @@ def create_agent():
     # Initialize Tavily search tool
     try:
         tavily_search: TavilySearch = TavilySearch(
-            max_results=3
+            max_results=3,
+            search_depth="advanced"
         )
     except Exception as e:
         raise RuntimeError(f"Failed to initialize TavilySearch tool: {e}")
@@ -65,7 +66,7 @@ def create_agent():
     
     # Create the React agent
     try:
-        agent: CompiledGraph = create_react_agent(
+        agent: CompiledStateGraph = create_react_agent(
             model=model,
             tools=tools,
             checkpointer=checkpointer
@@ -77,9 +78,10 @@ def create_agent():
 
 # Initialize the compiled graph with proper error handling
 try:
-    compiled_graph: CompiledGraph = create_agent()
+    compiled_graph: CompiledStateGraph = create_agent()
 except Exception as e:
     raise RuntimeError(f"Failed to initialize agent: {e}")
+
 
 
 
