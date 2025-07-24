@@ -53,7 +53,8 @@ def create_agent():
     # Initialize Tavily search tool
     try:
         tavily_search: TavilySearch = TavilySearch(
-            max_results=3
+            max_results=3,
+            search_depth="advanced"
         )
     except Exception as e:
         raise RuntimeError(f"Failed to initialize TavilySearch tool: {e}")
