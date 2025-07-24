@@ -10,7 +10,7 @@ from typing import List, Optional
 from langchain_core.tools import BaseTool
 from langchain_openai import ChatOpenAI
 from langchain_tavily import TavilySearch
-from langgraph.graph.graph import CompiledGraph
+from langgraph.graph.state import CompiledStateGraph
 from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.prebuilt import create_react_agent
 from langgraph.checkpoint.memory import InMemorySaver
