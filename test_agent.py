@@ -32,8 +32,9 @@ try:
     # Test that the app can handle the evaluation input format
     print("🧪 Testing evaluation input format...")
     try:
-        # This is what the evaluator will do
-        result = app.invoke(test_input)
+        # This is what the evaluator will do - need to provide thread_id for checkpointer
+        config = {"configurable": {"thread_id": "test-thread"}}
+        result = app.invoke(test_input, config=config)
         print(f"✅ App invocation successful")
         print(f"✅ Result type: {type(result)}")
         print(f"✅ Result keys: {result.keys() if isinstance(result, dict) else 'Not a dict'}")
@@ -54,5 +55,6 @@ except Exception as e:
     print(f"❌ Error: {e}")
     import traceback
     traceback.print_exc()
+
 
 
