@@ -29,10 +29,30 @@ try:
         messages_annotation = State.__annotations__.get('messages')
         print(f"✅ Messages field annotation: {messages_annotation}")
     
+    # Test that the app can handle the evaluation input format
+    print("🧪 Testing evaluation input format...")
+    try:
+        # This is what the evaluator will do
+        result = app.invoke(test_input)
+        print(f"✅ App invocation successful")
+        print(f"✅ Result type: {type(result)}")
+        print(f"✅ Result keys: {result.keys() if isinstance(result, dict) else 'Not a dict'}")
+        if isinstance(result, dict) and 'messages' in result:
+            print(f"✅ Messages in result: {len(result['messages'])} messages")
+            if result['messages']:
+                last_message = result['messages'][-1]
+                print(f"✅ Last message type: {type(last_message)}")
+                print(f"✅ Last message content preview: {str(last_message)[:100]}...")
+    except Exception as e:
+        print(f"❌ App invocation failed: {e}")
+        import traceback
+        traceback.print_exc()
+    
     print("✅ Agent is ready for evaluation")
     
 except Exception as e:
     print(f"❌ Error: {e}")
     import traceback
     traceback.print_exc()
+
 
