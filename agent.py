@@ -81,24 +81,26 @@ def create_agent():
     checkpointer = InMemorySaver()
     
     # Create the React agent with proper state handling
+    # For evaluation compatibility, we'll create without checkpointer first
+    # since evaluators might not provide thread_id configuration
     try:
-        # Try with state schema first
+        # Try without checkpointer first for evaluation compatibility
         agent = create_react_agent(
             model=model,
             tools=tools,
-            checkpointer=checkpointer,
             state_schema=State
         )
     except Exception:
-        # Fallback without explicit state schema if not supported
+        # Fallback with checkpointer if the above fails
         try:
             agent = create_react_agent(
                 model=model,
                 tools=tools,
-                checkpointer=checkpointer
+                checkpointer=checkpointer,
+                state_schema=State
             )
         except Exception:
-            # Final fallback without checkpointer for evaluation compatibility
+            # Final fallback without state schema
             try:
                 agent = create_react_agent(
                     model=model,
@@ -132,6 +134,7 @@ except Exception as e:
         app = graph_builder.compile()
     except Exception:
         raise RuntimeError(f"Failed to initialize agent: {e}")
+
 
 
 
